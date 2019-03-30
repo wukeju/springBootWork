@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<center>
+
+    <img id="showimg"  width="60px" height="80px">
+    <br>
+    照片：<input type="file" id="proimg">
+    <input type="button" value="确认使用" onclick='uploadphoto()' >
+    <br><br>
+    <form id="addFrom">
+        <input  name="img" >
+        <input type="hidden" name="proid" >
+        商品名称:<input type="text" name="proname" ><br>
+        商品价格:<input type="text" name="price" ><br>
+        上架时间:<input  class="Wdate"  type="text" name="prodate" ><br>
+        关注人数:<input type="text" name="renshu" ><br>
+        <input type="button" value="提交" id="add">
+    </form>
+</center>
+<script src="/jquery.min.js"></script>
+
+<script>
+
+
+    function uploadphoto(){
+        var formData = new FormData();
+        formData.append("img", document.getElementById("proimg").files[0]);
+        $.ajax({
+            url: "/product/uploadimg",
+            type: "POST",
+            data: formData,
+            /**
+             *必须false才会自动加上正确的Content-Type
+             */
+            contentType: false,
+            /**
+             * 必须false才会避开jQuery对 formdata 的默认处理
+             * XMLHttpRequest会对 formdata 进行正确的处理
+             */
+            processData: false,
+            success: function (data) {
+
+//             1.显示图片------设置img标签的src属性为data------使用prop方法设置属性
+                $("#showimg").prop('src',data);
+//             2.将图片地址存储到form标签中的隐藏域中
+                $("#img").val(data);
+            }
+        });
+    }
+
+
+
+
+
+
+    $("#add").click(function(){
+        $.ajax({
+            type:"post",
+            url:"/product/addProduct",
+            data:$("#addFrom").serialize(),
+            success:function(info){
+                location.href="/product/queryProduct"
+            }
+        })
+    })
+
+
+</script>
+</body>
+</html>

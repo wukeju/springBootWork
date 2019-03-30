@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<center>
+    <input type="button" value="添加" th:onclick="add()"/>
+    <table border="1">
+        <tr>
+            <td>商品编号</td>
+            <td>商品名称</td>
+            <td>商品价格</td>
+            <td>上架时间</td>
+            <td>关注人数</td>
+            <td>操作</td>
+        </tr>
+        <tr  th:each="pro : ${pojoList}">
+            <th scope="row" th:text="${pro.proid}"></th>
+            <td th:text="${pro.proname}"></td>
+            <td th:text="${pro.price}"></td>
+            <td th:text="${#dates.format(pro.prodate, 'yyyy-MM-dd')}"></td>
+            <td th:text="${pro.renshu}"></td>
+            <td>
+
+                <input type="button" value="修改" th:onclick="'edit('+${pro.proid}+')'"/>
+                <input type="button" value="删除" th:onclick="'dele('+${pro.proid}+')'"/>
+            </td>
+        </tr>
+
+    </table>
+
+</center>
+
+<script src="/jquery.min.js"></script>
+<script>
+   function add(){
+        location.href="/product/addHtml"
+   }
+
+   function edit(id){
+       location.href="/product/huixian?proid="+id
+   }
+
+   function dele(id){
+           $.ajax({
+               type:"post",
+               url:"/product/delePro?proid="+id,
+               data:$("#addFrom").serialize(),
+               success:function(info){
+                   location.href="/product/queryProduct"
+               }
+       })
+   }
+</script>
+</body>
+</html>

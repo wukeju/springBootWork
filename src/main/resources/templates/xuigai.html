@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<center>
+
+    <form id="upFrom">
+        <input type="hidden" name="proid" th:value="${pojo2.proid}">
+        商品名称:<input type="text" name="proname" th:value="${pojo2.proname}"><br>
+        商品价格:<input type="text" name="price" th:value="${pojo2.price}"><br>
+        上架时间: <input  class="Wdate"  type="text" th:value="${#dates.format(pojo2.prodate, 'yyyy-MM-dd')}" name="prodate"><br>
+        关注人数:<input type="text" name="renshu" th:value="${pojo2.renshu}"><br>
+        <input type="submit" id="up">
+    </form>
+</center>
+<script src="/jquery.min.js"></script>
+<script>
+    $("#up").click(function(){
+        $.ajax({
+            type:"post",
+            url:"/product/upProduct",
+            data:$("#upFrom").serialize(),
+            success:function(info){
+                location.href="/product/queryProduct"
+            }
+        })
+    })
+
+</script>
+</body>
+</html>
