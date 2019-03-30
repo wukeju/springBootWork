@@ -96,4 +96,9 @@ public class ProductController {
         return  "upload/"+onlyFileName;
     }
 
+
+    public  String  aaa(){
+        return "";
+    }
+
 }
